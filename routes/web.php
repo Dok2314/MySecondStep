@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers as C;
+use App\Http\Controllers\Auth AS AuthControllers;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +17,30 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+   return view('home');
+})->name('homePage');
+
+Route::group(['prefix' => 'authorization', 'as' => 'auth.'], function() {
+    Route::group(['middleware' => 'guest'], function () {
+        Route::get('/registration', [AuthControllers\RegistrationController::class, 'registrationView'])
+            ->name('registration');
+
+        Route::post('/registration', [AuthControllers\RegistrationController::class, 'registration']);
+
+        Route::get('/login', [AuthControllers\LoginController::class, 'loginView'])
+            ->name('login');
+
+        Route::post('/login', [AuthControllers\LoginController::class, 'login']);
+
+        Route::get('/registration-reload-captcha', [AuthControllers\RegistrationController::class, 'reloadCaptcha']);
+        Route::get('/login-reload-captcha', [AuthControllers\LoginController::class, 'reloadCaptcha']);
+    });
+
+    Route::group(['middleware' => 'auth'], function () {
+        Route::get('/logout', function () {
+            Auth::logout();
+
+            return redirect()->route('homePage');
+        })->name('logout');
+    });
 });

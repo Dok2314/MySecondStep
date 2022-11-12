@@ -4,6 +4,7 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Validation\Rules\Password;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +26,9 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        // Пароль должен содержать: хотя бы 1 цифру, хотя бы 1 букву, хотя бы 1 символ, верхний/нижний регистр
+        Password::defaults(function () {
+            return Password::min(8)->numbers()->letters()->symbols()->mixedCase();
+        });
     }
 }
