@@ -1,0 +1,98 @@
+@extends('layouts.main')
+
+@section('title', 'Посты')
+
+@section('header')
+    <header class="p-3 bg-dark text-white">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="{{ route('homePage') }}" class="nav-link px-2 text-secondary">Главная</a></li>
+                </ul>
+                <div class="text-end">
+                    @auth
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4 style="margin-right: 17px">{{ Auth::user()->name }}</h4>
+                                    <a href="{{ route('auth.logout') }}">
+                                        <button type="button" class="btn btn-outline-light me-2">Выйти</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endauth
+
+                    @guest
+                        <a href="{{ route('auth.login') }}"><button type="button" class="btn btn-outline-light me-2">Войти</button></a>
+                    @endguest
+                    @guest
+                        <a href="{{ route('auth.registration') }}"><button type="button" class="btn btn-warning">Регистрация</button></a>
+                    @endguest
+                </div>
+            </div>
+        </div>
+    </header>
+@endsection
+
+@section('content')
+    <a href="{{ route('posts.create') }}" style="font-size: 30px;"><i class="fa-solid fa-plus"></i></a>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h2>Посты</h2>
+                <h5>Удалённых: {{ $countWithDeleted }}</h5>
+                <h5>Не удалённых: {{ $countWithoutDeleted }}</h5>
+                @foreach($posts as $post)
+                    <br>
+                    <div class="card" style="{{ $post->deleted_at ? 'background: rgba(255, 0, 0, 0.2)' : '' }};">
+                        <div class="card-header">
+                            {{ $post->title }}
+                            <div class="float-right">
+                                @if($post->deleted_at)
+                                    <form method="post" action="{{ route('posts.restore', $post->id) }}">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="submit" style="background: none; color: red; border: none;">
+                                            <i class="fa-solid fa-trash-can-arrow-up" style="color: orange;"></i>
+                                        </button>
+                                    </form>
+                                @else
+                                    <form method="post" action="{{ route('posts.destroy', $post->id) }}">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button type="submit" style="background: none; color: red; border: none;">
+                                            <i class="fa-sharp fa-solid fa-delete-left"></i>
+                                        </button>
+                                    </form>
+                                    <a href="{{ route('posts.edit', $post->id) }}">
+                                        <i class="fa-solid fa-pen-to-square" style="color: blue; margin-left: 10px;"></i>
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            @if($post->deleted_at)
+                                <h6 class="card-title float-right">Удалён: {{ $post->deleted_at->toDateString() }}</h6>
+                            @else
+                                <h6 class="card-title float-right">Создан: {{ $post->created_at->toDateString() }}</h6>
+                            @endif
+                            <h4>{{ $post->deleted_at ? 'УДАЛЁН' : '' }}</h4>
+                            <p class="card-text">{!! $post->post !!}</p>
+                            <span style="margin-right: 5px;"><i class="fa-solid fa-heart" style="color: red;"></i>(53)</span>
+                            <span><i class="fa-solid fa-comment"></i>(34)</span>
+                        </div>
+                    </div>
+                @endforeach
+                <br>
+                <div class="mb-5">
+                    {{ $posts->links('vendor.pagination.bootstrap-4') }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h2>Популярные посты</h2>
+            </div>
+        </div>
+    </div>
+@endsection
