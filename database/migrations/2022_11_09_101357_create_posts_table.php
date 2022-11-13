@@ -19,6 +19,7 @@ return new class extends Migration
                 ->constrained('users')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+            $table->string('title');
             $table->string('slug')->unique();
             $table->text('post');
             $table->timestamps();

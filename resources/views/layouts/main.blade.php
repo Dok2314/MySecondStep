@@ -12,17 +12,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/js/fontawesome.min.js">
 </head>
 <body>
+<style>
+    @stack('styles')
+</style>
+
 @yield('header')
 
-<div class="container" style="text-align: center;">
-    @include('includes.success')
-    @include('includes.error')
+<div class="row">
+    <div class="col-md-2">
+        @include('sidebar')
+    </div>
+    <div class="col-md-9" style="margin-left: 50px; margin-top: 10px;">
+        @include('includes.success')
+        @include('includes.error')
+        @yield('content')
+    </div>
 </div>
-
-@yield('content')
 
 @yield('footer')
 
+@include('includes.footer')
 <script src="https://kit.fontawesome.com/d202b66049.js" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 @stack('scripts')

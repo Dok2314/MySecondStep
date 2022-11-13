@@ -15,7 +15,7 @@ class LoginController extends Controller
 
     public function login(LoginRequest $request)
     {
-        if (Auth::attempt($request->only(['email', 'password']), $request->boolean('remember'))) {
+        if(Auth::attempt($request->only(['email', 'password']), $request->boolean('remember'))) {
             $user = Auth::user();
 
             return redirect()->route('homePage')->with('success', sprintf(

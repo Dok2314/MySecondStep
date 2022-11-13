@@ -4,6 +4,7 @@ use App\Http\Controllers as C;
 use App\Http\Controllers\Auth AS AuthControllers;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\CRUD\Post as P;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,4 +44,11 @@ Route::group(['prefix' => 'authorization', 'as' => 'auth.'], function() {
             return redirect()->route('homePage');
         })->name('logout');
     });
+});
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::put('/restore/{id}', [P\PostController::class, 'restore'])
+        ->name('posts.restore');
+
+    Route::resource('posts', P\PostController::class);
 });

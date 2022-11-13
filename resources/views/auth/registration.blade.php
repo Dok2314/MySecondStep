@@ -21,7 +21,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <form method="post" class="form-control mt-5">
+            <form method="post" class="form-control mt-5 mb-5">
                 @method('POST')
                 @csrf
                 <div class="form-group mt-4">
@@ -82,7 +82,7 @@
         $('#reload').click(function () {
             $.ajax({
                 type: 'GET',
-                url: 'reload-captcha',
+                url: 'registration-reload-captcha',
                 success: function (data) {
                     $(".captcha span").html(data.captcha);
                 }
