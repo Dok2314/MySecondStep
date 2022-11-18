@@ -4,7 +4,7 @@ use App\Http\Controllers as C;
 use App\Http\Controllers\Auth AS AuthControllers;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\CRUD\Post as P;
+use App\Http\Controllers\CRUD as CRUD;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,9 +17,11 @@ use App\Http\Controllers\CRUD\Post as P;
 |
 */
 
-Route::get('/', function () {
-   return view('home');
-})->name('homePage');
+Route::get('/', [C\HomeController::class, 'home'])->name('homePage');
+
+//Route::get('/test', function () {
+//
+//});
 
 Route::group(['prefix' => 'authorization', 'as' => 'auth.'], function() {
     Route::group(['middleware' => 'guest'], function () {
@@ -47,8 +49,14 @@ Route::group(['prefix' => 'authorization', 'as' => 'auth.'], function() {
 });
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::put('/restore/{id}', [P\PostController::class, 'restore'])
+    Route::put('/restore/{id}', [CRUD\Post\PostController::class, 'restore'])
         ->name('posts.restore');
 
-    Route::resource('posts', P\PostController::class);
+    Route::get('posts/{Id}/comments/create', [CRUD\Comment\CommentController::class, 'create'])
+        ->name('commentToPost.create');
+
+    Route::resources([
+        'posts'     => CRUD\Post\PostController::class,
+        'comments'  => CRUD\Comment\CommentController::class
+    ]);
 });

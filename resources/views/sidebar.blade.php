@@ -9,7 +9,7 @@
         <li class="nav-item">
             <a href="{{ route('posts.index') }}" class="nav-link active" aria-current="page">
                 <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
-                Посты
+                Мои Посты
             </a>
         </li>
     </ul>

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Посты')
+@section('title', 'Мои посты')
 
 @section('header')
     <header class="p-3 bg-dark text-white">
@@ -41,10 +41,10 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                <h2>Посты</h2>
+                <h2>Мои Посты</h2>
                 <h5>Удалённых: {{ $countWithDeleted }}</h5>
                 <h5>Не удалённых: {{ $countWithoutDeleted }}</h5>
-                @foreach($posts as $post)
+                @foreach($userPosts as $post)
                     <br>
                     <div class="card" style="{{ $post->deleted_at ? 'background: rgba(255, 0, 0, 0.2)' : '' }};">
                         <div class="card-header">
@@ -87,7 +87,7 @@
                 @endforeach
                 <br>
                 <div class="mb-5">
-                    {{ $posts->links('vendor.pagination.bootstrap-4') }}
+                    {{ $userPosts->links('vendor.pagination.bootstrap-4') }}
                 </div>
             </div>
             <div class="col-md-4">

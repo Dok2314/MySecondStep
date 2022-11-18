@@ -20,11 +20,13 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts               = Post::withTrashed()->paginate(5);
-        $countWithDeleted    = Post::onlyTrashed()->count();
-        $countWithoutDeleted = Post::whereNull('deleted_at')->count();
+        $user = Auth::user();
 
-        return view('CRUD.posts.index', compact('posts', 'countWithDeleted', 'countWithoutDeleted'));
+        $userPosts           = $user->posts()->withTrashed()->paginate(5);
+        $countWithDeleted    = $user->posts()->onlyTrashed()->count();
+        $countWithoutDeleted = $user->posts()->whereNull('deleted_at')->count();
+
+        return view('CRUD.posts.index', compact('userPosts', 'countWithDeleted', 'countWithoutDeleted'));
     }
 
     /**
@@ -49,10 +51,10 @@ class PostController extends Controller
 
         try {
             Post::create([
-                'title'     => $request->input('title'),
-                'slug'      => Str::slug($request->input('title')),
-                'post'      => $request->input('post'),
-                'user_id'   => Auth::user()->id
+                'title' => $request->input('title'),
+                'slug' => Str::slug($request->input('title')),
+                'post' => $request->input('post'),
+                'user_id' => Auth::user()->id
             ]);
         }catch(\Exception $e) {
             DB::rollback();
