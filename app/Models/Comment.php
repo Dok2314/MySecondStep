@@ -20,6 +20,8 @@ class Comment extends Model
         'deleted_at'
     ];
 
+    protected $withCount = ['likedUsers'];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -28,5 +30,10 @@ class Comment extends Model
     public function post()
     {
         return $this->belongsTo(Post::class);
+    }
+
+    public function likedUsers()
+    {
+        return $this->belongsToMany(User::class, 'comment_user_likes','comment_id','user_id');
     }
 }

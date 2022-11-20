@@ -7,6 +7,38 @@
 @endsection
 
 @section('content')
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Данный пост также нравится:</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Пользователь</th>
+                            <th scope="col">E-mail</th>
+                        </tr>
+                        </thead>
+                        <tbody class="usersWhoAlsoLikePost">
+
+                        </tbody>
+                    </table>
+                </div>
+{{--                <div class="modal-footer">--}}
+{{--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>--}}
+{{--                    <button type="button" class="btn btn-primary">Save changes</button>--}}
+{{--                </div>--}}
+            </div>
+        </div>
+    </div>
+
     <div class="container mb-5 mt-3">
         <div class="row">
             <div class="col-md-8">
@@ -22,9 +54,10 @@
                 </form>
             </div>
             <div class="col-md-4">
-                <form action="">
+{{--                 TODO:search--}}
+{{--                <form action="">--}}
 
-                </form>
+{{--                </form>--}}
             </div>
         </div>
     </div>
@@ -47,10 +80,30 @@
                 <td>{{ $post->user->name }}</td>
                 <td>{{ $post->created_at }}</td>
                 <td>
-                    <span style="margin-right: 5px;"><i class="fa-solid fa-heart" style="color: red;"></i>(53)</span>
+                    <button
+                        id="show-users"
+                        data-url="{{ route('user.likes', $post->id) }}"
+                        type="button" class="border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        {{ $post->liked_users_count }}
+                    </button>
+                    <form action="{{ route('post.like', $post->id) }}" method="post" class="offset-3" style="margin-top: -24px; margin-left: 23px;">
+                        @csrf
+                        @method('POST')
+                        <button class="border-0 bg-transparent">
+                            @auth
+                                    <i
+                                        class="fa-solid fa-heart"
+                                       style="color: {{ auth()->user()->likedPosts->contains($post->id) ? 'red' : 'silver' }}">
+                                    </i>
+                            @endauth
+                            @guest
+                                    <i class="fa-solid fa-heart" style="color: black "></i>
+                            @endguest
+                        </button>
+                    </form>
                 </td>
                 <td>
-                    <a href="{{ route('commentToPost.create', $post->id) }}" style="text-decoration: none;"><span><i class="fa-solid fa-comment"></i>({{ $post->comments->count() }})</span></a>
+                    <a href="{{ route('commentToPost.create', $post->id) }}" style="text-decoration: none;"><span><i class="fa-solid fa-comment offset-3"></i>({{ $post->comments->count() }})</span></a>
                 </td>
             </tr>
         @endforeach
@@ -69,6 +122,32 @@
                 field: "text",
                 direction: "asc"
             }
+        });
+
+        $(document).ready(function () {
+            $('body').on('click', '#show-users', function () {
+
+                var userURL = $(this).data('url');
+
+                $.ajax({
+                    url: userURL,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        var data = ""
+
+                        $.each(response, function(key,value){
+                            data = data + "<tr>"
+                            data = data + "<td>"+value.name+"</td>"
+                            data = data + "<td>"+value.email+"</td>"
+                            data = data + "<td>"
+                            data = data + "</td>"
+                            data = data + "</tr>"
+                        });
+                        $('.usersWhoAlsoLikePost').html(data);
+                    }
+                });
+            });
         });
     </script>
 @endpush

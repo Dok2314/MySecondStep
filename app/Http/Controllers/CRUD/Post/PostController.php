@@ -145,4 +145,18 @@ class PostController extends Controller
 
         return redirect()->back()->with('success', 'Пост успешно востановлен!');
     }
+
+    public function like(Post $post)
+    {
+        auth()->user()->likedPosts()->toggle($post->id);
+
+        return redirect()->back();
+    }
+
+    public function userWhoAlsoLikePost(Post $post)
+    {
+        $users = $post->likedUsers;
+
+        return $users;
+    }
 }
