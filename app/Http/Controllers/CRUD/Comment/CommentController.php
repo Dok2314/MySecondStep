@@ -29,7 +29,7 @@ class CommentController extends Controller
     public function create($id)
     {
         $post     = Post::find($id);
-        $comments = $post->comments()->paginate(5);
+        $comments = $post->comments()->orderBy('created_at', 'desc')->paginate(5);
 
         return view('CRUD.comments.create', compact('post', 'comments'));
     }
@@ -108,5 +108,12 @@ class CommentController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function like(Comment $comment)
+    {
+        auth()->user()->likedComments()->toggle($comment->id);
+
+        return redirect()->back();
     }
 }

@@ -55,6 +55,21 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('posts/{Id}/comments/create', [CRUD\Comment\CommentController::class, 'create'])
         ->name('commentToPost.create');
 
+    Route::group(['prefix' => '{post}/likes'], function () {
+        Route::post('/', [CRUD\Post\PostController::class, 'like'])
+            ->name('post.like');
+    });
+
+    Route::group(['prefix' => 'comments/{comment}/likes'], function () {
+        Route::post('/', [CRUD\Comment\CommentController::class, 'like'])
+            ->name('comment.like');
+    });
+
+    Route::group(['prefix' => 'user/{post}/likes'], function () {
+        Route::get('/', [CRUD\Post\PostController::class, 'userWhoAlsoLikePost'])
+            ->name('user.likes');
+    });
+
     Route::resources([
         'posts'     => CRUD\Post\PostController::class,
         'comments'  => CRUD\Comment\CommentController::class

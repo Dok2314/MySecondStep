@@ -58,4 +58,14 @@ class User extends Authenticatable
     {
         return $builder->whereNot('banned');
     }
+
+    public function likedPosts()
+    {
+        return $this->belongsToMany(Post::class, 'post_user_likes','user_id','post_id');
+    }
+
+    public function likedComments()
+    {
+        return $this->belongsToMany(Comment::class, 'comment_user_likes','user_id','comment_id');
+    }
 }

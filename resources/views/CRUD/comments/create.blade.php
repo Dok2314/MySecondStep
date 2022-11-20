@@ -36,30 +36,44 @@
 {{--                                                     src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp" alt="avatar" width="60"--}}
 {{--                                                     height="60" />--}}
                                                 <div>
-                                                    <h6 class="fw-bold text-primary mb-1">{{ $comment->user->name }}</h6>
+                                                    <h6 class="fw-bold text-primary mb-1">Автор: {{ $comment->user->name }}</h6>
                                                     <p class="text-muted small mb-0">
                                                         Created: {{ $comment->created_at->toDateString() }}
                                                     </p>
                                                 </div>
                                             </div>
-
+                                            <p class="mt-3">
+                                                Название: <strong>{{ $comment->title }}</strong>
+                                            </p>
                                             <p class="mt-3 mb-4 pb-2">
                                                 {!! $comment->comment !!}
                                             </p>
 
                                             <div class="small d-flex justify-content-start">
-                                                <a href="#!" class="d-flex align-items-center me-3">
-                                                    <i class="far fa-thumbs-up me-2"></i>
-                                                    <p class="mb-0">Like</p>
-                                                </a>
-                                                <a href="#!" class="d-flex align-items-center me-3">
-                                                    <i class="far fa-comment-dots me-2"></i>
-                                                    <p class="mb-0">Comment</p>
-                                                </a>
-                                                <a href="#!" class="d-flex align-items-center me-3">
-                                                    <i class="fas fa-share me-2"></i>
-                                                    <p class="mb-0">Share</p>
-                                                </a>
+                                                <form action="{{ route('comment.like', $comment->id) }}" method="post">
+                                                    @csrf
+                                                    @method('POST')
+                                                    <span>{{ $comment->liked_users_count }}</span>
+                                                        <button class="border-0 bg-transparent" type="submit">
+                                                            @auth
+                                                                <i
+                                                                    class="fa-solid fa-heart"
+                                                                    style="color: {{ auth()->user()->likedComments->contains($comment->id) ? 'red' : 'silver' }}">
+                                                                </i>
+                                                            @endauth
+                                                            @guest
+                                                                <i class="fa-solid fa-heart" style="color: black "></i>
+                                                            @endguest
+                                                        </button>
+                                                </form>
+{{--                                                <a href="#!" class="d-flex align-items-center me-3">--}}
+{{--                                                    <i class="far fa-comment-dots me-2"></i>--}}
+{{--                                                    <p class="mb-0">Comment</p>--}}
+{{--                                                </a>--}}
+{{--                                                <a href="#!" class="d-flex align-items-center me-3">--}}
+{{--                                                    <i class="fas fa-share me-2"></i>--}}
+{{--                                                    <p class="mb-0">Share</p>--}}
+{{--                                                </a>--}}
                                             </div>
                                         </div>
                                     </div>
