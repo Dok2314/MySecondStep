@@ -10,6 +10,7 @@ class HomeController extends Controller
 {
     public function home(PostFilter $filter)
     {
+        dd('test');
         $posts    = Post::filter($filter)->paginate(5);
         $users    = User::all();
 
