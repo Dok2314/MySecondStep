@@ -75,3 +75,5 @@ Route::group(['middleware' => 'auth'], function () {
         'comments'  => CRUD\Comment\CommentController::class
     ]);
 });
+
+Route::get('/search', [C\HomeController::class, 'search'])->name('search');

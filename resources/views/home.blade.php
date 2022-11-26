@@ -54,27 +54,28 @@
                 </form>
             </div>
             <div class="col-md-4">
-{{--                 TODO:search--}}
-{{--                <form action="">--}}
-
-{{--                </form>--}}
+                <div class="search">
+                    <input style="margin-top: 35px;" type="search" name="search" id="search" placeholder="Найдите нужный пост..." class="form-control">
+                </div>
             </div>
         </div>
     </div>
     <table class="table">
         <thead>
         <tr>
+            <th scope="col">Номер</th>
             <th scope="col">Название</th>
             <th scope="col">Пост</th>
             <th scope="col">Автор</th>
-            <th scope="col">Дата создания</th>
+            <th scope="col">Создан</th>
             <th scope="col">Нравится</th>
             <th scope="col">Коментарии</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="Content">
         @foreach($posts as $post)
             <tr>
+                <td>{{ $post->id }}</td>
                 <td>{{ $post->title }}</td>
                 <td>{!! $post->post !!}</td>
                 <td>{{ $post->user->name }}</td>
@@ -149,5 +150,20 @@
                 });
             });
         });
+
+        $('#search').on('keyup', function (e) {
+            e.preventDefault();
+
+            $value = $(this).val();
+
+            $.ajax({
+               type: "GET",
+               data: {'search':$value},
+               url: "{{ URL::to('search') }}",
+               success: function (data) {
+                   $('#Content').html(data);
+               }
+            });
+        })
     </script>
 @endpush
