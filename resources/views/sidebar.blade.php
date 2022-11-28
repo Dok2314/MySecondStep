@@ -6,10 +6,22 @@
                 Админка
             </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item mb-2">
+            <a href="{{ route('profile.index') }}" class="nav-link active" aria-current="page">
+                <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+                Профиль
+            </a>
+        </li>
+        <li class="nav-item mb-2">
             <a href="{{ route('posts.index') }}" class="nav-link active" aria-current="page">
                 <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
                 Мои Посты
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('weather') }}" class="nav-link active" aria-current="page">
+                <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+                Погода
             </a>
         </li>
     </ul>
