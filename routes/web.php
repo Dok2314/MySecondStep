@@ -77,3 +77,14 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::get('/search', [C\HomeController::class, 'search'])->name('search');
+
+
+Route::group(['prefix' => 'your'], function() {
+    Route::get('/weather', [C\WeatherController::class, 'weather'])->name('weather');
+    Route::get('/weather/info', [C\WeatherController::class, 'getAjaxWeather'])->name('getWeather');
+});
+
+Route::group(['middleware' => 'auth', 'prefix' => 'profile', 'as' => 'profile.'], function () {
+    Route::get('/', [C\ProfileController::class, 'index'])->name('index');
+    Route::post('/', [C\ProfileController::class, 'update'])->name('updateImage');
+});
