@@ -27,7 +27,7 @@ class UserUpdateRequest extends FormRequest
         return [
             'name'                  => ['required', 'string', 'min:3', 'max:255'],
             'email'                 => ['required', 'email' => 'email:rfc,dns', 'min:5', 'max:255'],
-            'new_pass'              => ['max:255', Password::defaults()]
+            'new_pass'              => ['max:255', Password::defaults(), 'nullable']
         ];
     }
 }

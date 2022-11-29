@@ -34,13 +34,7 @@ class UserController extends Controller
 
     public function update(User $user, UserUpdateRequest $request)
     {
-        if($user->name !== $request->name) {
-            $user->name = $request->name;
-        }
-
-        if($user->email !== $request->email) {
-            $user->email = $request->email;
-        }
+        $user->fill($request->validated());
 
         if($request->has('new_profile_image')) {
             $avatar = $request->file('new_profile_image');
