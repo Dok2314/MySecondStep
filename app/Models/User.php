@@ -22,6 +22,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'role_id',
         'password',
     ];
 
@@ -67,5 +68,31 @@ class User extends Authenticatable
     public function likedComments()
     {
         return $this->belongsToMany(Comment::class, 'comment_user_likes','user_id','comment_id');
+    }
+
+    public function isAdministrator()
+    {
+        return $this->role->id === 1;
+    }
+
+    public function isDeveloper()
+    {
+        return $this->role->id === 2;
+    }
+
+    public function isUser()
+    {
+        return $this->role->id === 3;
+    }
+
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function hasPermission($code)
+    {
+        return $this->role->permissions->contains(fn(Permission $permission) => $permission->code == $code);
     }
 }

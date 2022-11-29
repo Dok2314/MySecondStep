@@ -87,4 +87,18 @@ Route::group(['prefix' => 'your'], function() {
 Route::group(['middleware' => 'auth', 'prefix' => 'profile', 'as' => 'profile.'], function () {
     Route::get('/', [C\ProfileController::class, 'index'])->name('index');
     Route::post('/', [C\ProfileController::class, 'update'])->name('updateImage');
+
+    Route::get('/admin', [C\AdminController::class, 'index'])->name('adminProfile');
+});
+
+Route::group(['prefix' => 'users', 'as' => 'user.', 'middleware' => 'auth'], function() {
+    Route::get('/', [CRUD\User\UserController::class, 'index'])->name('index');
+
+    Route::group(['prefix' => '{user}'], function () {
+       Route::get('/', [CRUD\User\UserController::class, 'show'])->name('show');
+
+       Route::get('edit', [CRUD\User\UserController::class, 'edit'])->name('edit');
+
+       Route::put('edit', [CRUD\User\UserController::class, 'update']);
+    });
 });
