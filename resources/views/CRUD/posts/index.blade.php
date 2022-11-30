@@ -50,7 +50,7 @@
                         <div class="card-header">
                             {{ $post->title }}
                             <div class="float-right">
-                                @if($post->deleted_at)
+                                @if($post->deleted_at && !$post->is_admin_deleted)
                                     <form method="post" action="{{ route('posts.restore', $post->id) }}">
                                         @csrf
                                         @method('PUT')
@@ -58,6 +58,16 @@
                                             <i class="fa-solid fa-trash-can-arrow-up" style="color: orange;"></i>
                                         </button>
                                     </form>
+                                @elseif($post->is_admin_deleted)
+                                    @can('post restore')
+                                        <form method="post" action="{{ route('posts.restore', $post->id) }}">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" style="background: none; color: red; border: none;">
+                                                <i class="fa-solid fa-trash-can-arrow-up" style="color: orange;"></i>
+                                            </button>
+                                        </form>
+                                    @endcan
                                 @else
                                     <form method="post" action="{{ route('posts.destroy', $post->id) }}">
                                         @method('DELETE')
@@ -78,10 +88,16 @@
                             @else
                                 <h6 class="card-title float-right">Создан: {{ $post->created_at->toDateString() }}</h6>
                             @endif
-                            <h4>{{ $post->deleted_at ? 'УДАЛЁН' : '' }}</h4>
+                            @if($post->deleted_at && !$post->is_admin_deleted)
+                               <h4>{{ $post->deleted_at ? 'УДАЛЁН' : '' }}</h4>
+                            @elseif($post->is_admin_deleted)
+                                    <h4>{{ $post->is_admin_deleted ? 'УДАЛЁН АДМИНИСТРАЦИЕЙ' : '' }}</h4>
+                            @endif
                             <p class="card-text">{!! $post->post !!}</p>
-                            <span style="margin-right: 5px;"><i class="fa-solid fa-heart" style="color: red;"></i>(53)</span>
-                            <span><i class="fa-solid fa-comment"></i>(34)</span>
+                            <span style="margin-right: 5px;"><i class="fa-solid fa-heart" style="color: red;"></i>({{ $post->liked_users_count }})</span>
+                            <span>
+                                <i class="fa-solid fa-comment"></i>({{ $post->comments_count }})
+                            </span>
                         </div>
                     </div>
                 @endforeach

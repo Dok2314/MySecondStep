@@ -70,6 +70,9 @@ Route::group(['middleware' => 'auth'], function () {
             ->name('user.likes');
     });
 
+    Route::delete('/delete/{post}', [CRUD\Post\PostController::class, 'deleteFormHomePage'])
+        ->name('posts.delete');
+
     Route::resources([
         'posts'     => CRUD\Post\PostController::class,
         'comments'  => CRUD\Comment\CommentController::class

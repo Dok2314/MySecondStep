@@ -19,10 +19,14 @@ class Post extends Model
         'user_id',
         'created_at',
         'updated_at',
-        'deleted_at'
+        'deleted_at',
+        'is_admin_deleted'
     ];
 
-    protected $withCount = ['likedUsers'];
+    protected $withCount = [
+        'likedUsers',
+        'comments'
+    ];
 
     public function user()
     {

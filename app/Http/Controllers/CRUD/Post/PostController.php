@@ -78,7 +78,9 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        $post = Post::findOrFail($id);
+
+        return view('CRUD.posts.show', compact('post'));
     }
 
     /**
@@ -134,9 +136,22 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        Post::find($id)->delete();
+         Post::find($id)->delete();
 
-        return redirect()->back()->with('success', 'Пост успешно удален!');
+        return redirect()->route('posts.index')->with('success', 'Пост успешно удален!');
+    }
+
+    public function deleteFormHomePage($id)
+    {
+        $post = Post::find($id);
+
+        $post->update([
+            'is_admin_deleted' => 1
+        ]);
+
+        $post->delete();
+
+        return redirect()->route('homePage')->with('success', 'Пост успешно удален!');
     }
 
     public function restore($id)
@@ -144,6 +159,11 @@ class PostController extends Controller
         Post::withTrashed()
             ->find($id)
             ->restore();
+
+        Post::find($id)
+            ->update([
+                'is_admin_deleted' => NULL
+            ]);
 
         return redirect()->back()->with('success', 'Пост успешно востановлен!');
     }
