@@ -16,9 +16,7 @@
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.0.0-rc.4/dist/js/tom-select.complete.min.js"></script>
 </head>
 <body>
-<style>
-    @stack('styles')
-</style>
+@stack('styles')
 
 @yield('header')
 

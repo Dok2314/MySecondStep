@@ -38,8 +38,9 @@
                 @error('email')
                 <div class="text-danger">{{ $message }}</div>
                 @enderror
-                <div class="form-group mt-4">
+                <div class="form-group mt-4 pass">
                     <label for="password">Пароль</label>
+                    <span class="icon_password" id="icon_password">&#128065</span>
                     <input type="password" name="password" id="password" class="form-control" value="{{ old('password') }}">
                 </div>
                 @error('password')
@@ -47,6 +48,7 @@
                 @enderror
                 <div class="form-group mt-4">
                     <label for="password_confirmation">Повторите пароль</label>
+                    <span class="icon_password_confirmation" id="icon_password_confirmation">&#128065</span>
                     <input type="password" name="password_confirmation" id="password_confirmation" class="form-control">
                 </div>
                 @error('password-confirm')
@@ -88,5 +90,51 @@
                 }
             });
         });
+
+        const inputPass = document.getElementById('password');
+        const iconPass  = document.getElementById('icon_password');
+
+        const inputPassConfirmation = document.getElementById('password_confirmation');
+        const iconPassConfirmation  = document.getElementById('icon_password_confirmation');
+
+        iconPass.addEventListener('click', function () {
+            if(inputPass.getAttribute('type') === 'password') {
+                inputPass.setAttribute('type', 'text');
+            } else {
+                inputPass.setAttribute('type', 'password');
+            }
+        });
+
+        iconPassConfirmation.addEventListener('click', function () {
+            if(inputPassConfirmation.getAttribute('type') === 'password') {
+                inputPassConfirmation.setAttribute('type', 'text');
+            } else {
+                inputPassConfirmation.setAttribute('type', 'password');
+            }
+        });
     </script>
+@endpush
+
+@push('styles')
+    <style>
+        .pass {
+            position: relative;
+        }
+
+        .icon_password {
+            position: absolute;
+            right: 20px;
+            top: 70%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        .icon_password_confirmation {
+            position: absolute;
+            right: 115px;
+            top: 65%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+    </style>
 @endpush

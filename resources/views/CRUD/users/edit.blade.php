@@ -69,11 +69,20 @@
         @error('role')
             <div class="text-danger">{{ $message }}</div>
         @enderror
-        <div class="form-group mb-3">
-            <label for="">Новый пароль?</label>
-            <input type="password" name="new_pass" class="form-control">
+        <div class="form-group mb-3 pass">
+            <label for="new_pass">Новый пароль?</label>
+            <span class="icon_new_pass" id="icon_new_pass">&#128065</span>
+            <input type="password" name="new_pass" id="new_pass" class="form-control new_pass">
         </div>
         @error('new_pass')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+        <div class="form-group mb-3">
+            <label for="new_pass_confirmation">Повторите пароль</label>
+            <span class="icon_new_pass_confirmation" id="icon_new_pass_confirmation">&#128065</span>
+            <input type="password" name="new_pass_confirmation" id="new_pass_confirmation" class="form-control new_pass_confirmation">
+        </div>
+        @error('new_pass_confirmation')
             <div class="text-danger">{{ $message }}</div>
         @enderror
         <div class="form-group mb-3">
@@ -89,12 +98,59 @@
 @endsection
 
 @push('scripts')
-    <script src="https://cdn.ckeditor.com/ckeditor5/35.3.0/classic/ckeditor.js"></script>
     <script>
-        ClassicEditor
-            .create( document.querySelector( '#editor' ) )
-            .catch( error => {
-                console.error( error );
-            } );
+        $('#new_pass_confirmation').prop( "disabled", true);
+
+        $('#new_pass').on('click', function (e) {
+            e.preventDefault();
+
+            $('#new_pass_confirmation').prop( "disabled", false);
+        })
+
+        const inputNewPass = document.getElementById('new_pass');
+        const iconNewPass  = document.getElementById('icon_new_pass');
+
+        const inputNewPassConfirmation = document.getElementById('new_pass_confirmation');
+        const iconNewPassConfirmation  = document.getElementById('icon_new_pass_confirmation');
+
+        iconNewPass.addEventListener('click', function () {
+           if(inputNewPass.getAttribute('type') === 'password') {
+               inputNewPass.setAttribute('type', 'text');
+           } else {
+               inputNewPass.setAttribute('type', 'password');
+           }
+        });
+
+        iconNewPassConfirmation.addEventListener('click', function () {
+            if(inputNewPassConfirmation.getAttribute('type') === 'password') {
+                inputNewPassConfirmation.setAttribute('type', 'text');
+            } else {
+                inputNewPassConfirmation.setAttribute('type', 'password');
+            }
+        });
     </script>
+@endpush
+
+@push('styles')
+    <style>
+        .pass {
+            position: relative;
+        }
+
+        .icon_new_pass {
+            position: absolute;
+            right: 20px;
+            top: 70%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        .icon_new_pass_confirmation {
+            position: absolute;
+            right: 105px;
+            top: 67.5%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+    </style>
 @endpush
