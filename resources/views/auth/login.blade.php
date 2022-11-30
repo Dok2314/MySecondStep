@@ -32,8 +32,9 @@
                     @error('email')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
-                    <div class="form-group mb-3 mt-3">
+                    <div class="form-group mb-3 mt-3 pass">
                         <label for="password">Пароль</label>
+                        <span class="password" id="icon_password">&#128065</span>
                         <input type="password" name="password" id="password" class="form-control">
                     </div>
                     @error('password')
@@ -79,5 +80,33 @@
                 }
             });
         });
+
+
+        const inputPassword = document.getElementById('password');
+        const iconPassword  = document.getElementById('icon_password');
+
+        iconPassword.addEventListener('click', function () {
+            if(inputPassword.getAttribute('type') === 'password') {
+                inputPassword.setAttribute('type', 'text');
+            } else {
+                inputPassword.setAttribute('type', 'password');
+            }
+        });
     </script>
+@endpush
+
+@push('styles')
+    <style>
+        .pass {
+            position: relative;
+        }
+
+        .password {
+            position: absolute;
+            right: 20px;
+            top: 70%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+    </style>
 @endpush
