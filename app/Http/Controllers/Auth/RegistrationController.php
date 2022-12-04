@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\UserRegistered;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegistrationRequest;
 use App\Models\User;
+use App\Services\Helpers\Telegram;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +25,9 @@ class RegistrationController extends Controller
     {
         $validatedFields = $request->all();
 
-        $user = $this->create($validatedFields);
+        event(new UserRegistered(
+            $user = $this->create($validatedFields)
+        ));
 
         $this->guard()->login($user, true);
 

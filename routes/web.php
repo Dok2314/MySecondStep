@@ -19,7 +19,7 @@ use App\Http\Controllers\CRUD as CRUD;
 
 Route::get('/', [C\HomeController::class, 'home'])->name('homePage');
 
-//Route::get('/test', function () {
+//Route::get('/test', function (\App\Services\Helpers\Telegram $telegram) {
 //
 //});
 
