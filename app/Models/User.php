@@ -97,4 +97,9 @@ class User extends Authenticatable
     {
         return $this->role->permissions->contains(fn(Permission $permission) => $permission->code == $code);
     }
+
+    static public function getAdmin(): User
+    {
+        return self::where('role_id', 1)->first();
+    }
 }

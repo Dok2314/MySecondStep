@@ -70,8 +70,15 @@
                                           <a href="#" class="float-right mark-as-read" style="text-decoration: none;" data-id="{{ $notification->id }}">
                                               Х
                                           </a>
-                                          [{{ $notification->created_at->toDateString() }}] <b>{{ $notification->data['title'] }}</b>
-                                          был только что создан, пользователем <b>{{ $notification->data['user_name'] }}</b>.
+
+                                          @if($notification->type == 'App\Notifications\PostCreatedNotification')
+                                              [{{ $notification->created_at->toDateString() }}] Пользователь <b>{{ $notification->data['user_name'] }}</b> создал пост
+                                              <b>{{ $notification->data['title'] }}</b>
+                                          @else
+                                              Пользователь <b>{{ $notification->data['name'] }}</b>
+                                              совершил вход на сайт в
+                                              [{{ $notification->created_at->toDateString() }}]
+                                          @endif
                                       </div>
 
                                       @if($loop->last)
