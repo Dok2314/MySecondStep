@@ -11,8 +11,9 @@ class ProfileController extends Controller
     public function index()
     {
         $user = auth()->user();
+        $notifications = auth()->user()->unreadNotifications;
 
-        return view('profile.index', compact('user'));
+        return view('profile.index', compact('user', 'notifications'));
     }
 
     public function update(Request $request)
@@ -32,5 +33,17 @@ class ProfileController extends Controller
         }
 
         return view('profile.index', compact('user'));
+    }
+
+    public function markNotification(Request $request)
+    {
+        auth()->user()
+            ->unreadNotifications
+            ->when($request->input('id'), function ($query) use ($request) {
+                return $query->where('id', $request->input('id'));
+            })
+            ->markAsRead();
+
+        return response()->noContent();
     }
 }
