@@ -3,6 +3,7 @@
 @section('title', 'Мои посты')
 
 @section('header')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <header class="p-3 bg-dark text-white">
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -53,11 +54,73 @@
                  </form>
              </div>
              <div class="col-md-4">
-                 <i class="fa-solid fa-bell" style="font-size: 50px; float: right">
+                 <!-- Modal -->
+                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <div class="modal-dialog">
+                         <div class="modal-content">
+                             <div class="modal-header">
+                                 <h5 class="modal-title" id="exampleModalLabel">Список уведомлений:</h5>
+                                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                     <span aria-hidden="true">&times;</span>
+                                 </button>
+                             </div>
+                             <div class="modal-body" id="modal-body">
+                                  @forelse($notifications as $notification)
+                                      <div class="alert alert-success" role="alert">
+                                          <a href="#" class="float-right mark-as-read" style="text-decoration: none;" data-id="{{ $notification->id }}">
+                                              Х
+                                          </a>
+                                          [{{ $notification->created_at->toDateString() }}] <b>{{ $notification->data['title'] }}</b>
+                                          был только что создан, пользователем <b>{{ $notification->data['user_name'] }}</b>.
+                                      </div>
 
-                 </i>
+                                      @if($loop->last)
+                                          <a href="#" id="mark-all" style="text-decoration: none;">
+                                              Отметить все как прочитаное
+                                          </a>
+                                      @endif
+                                  @empty
+                                      Уведомлений пока нет
+                                  @endforelse
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                     <button type="button" class="border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#exampleModal" style="float: right;">
+                         <i class="fa-solid fa-bell" style="font-size: 50px; float: right">
+                             {{ $notifications->count() }}
+                         </i>
+                     </button>
              </div>
          </div>
     </div>
 @endsection
 
+@push('scripts')
+    <script>
+        function sendMarkRequest(id = null) {
+            return $.ajax("{{ route('markNotification') }}", {
+                method: 'POST',
+                data: {
+                    '_token': $('meta[name="csrf-token"]').attr('content'),
+                    id
+                }
+            });
+        }
+        $(function() {
+            $('.mark-as-read').click(function() {
+                let request = sendMarkRequest($(this).data('id'));
+                console.log(request)
+                request.done(() => {
+                    $(this).parents('div.alert').remove();
+                });
+            });
+            $('#mark-all').click(function() {
+                let request = sendMarkRequest();
+                request.done(() => {
+                    $('div.alert').remove();
+                })
+            });
+        });
+    </script>
+@endpush

@@ -5,10 +5,13 @@ namespace App\Http\Controllers\CRUD\Post;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
+use App\Models\User;
+use App\Notifications\PostCreatedNotification;
 use App\Services\PriceCalculateService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -52,12 +55,16 @@ class PostController extends Controller
         DB::beginTransaction();
 
         try {
-            Post::create([
+            $post = Post::create([
                 'title' => $request->input('title'),
                 'slug' => Str::slug($request->input('title')),
                 'post' => $request->input('post'),
                 'user_id' => Auth::user()->id
             ]);
+
+            $users = User::all();
+
+            Notification::send($users, new PostCreatedNotification($post));
         }catch(\Exception $e) {
             DB::rollback();
 

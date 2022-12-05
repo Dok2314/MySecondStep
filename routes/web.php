@@ -109,3 +109,5 @@ Route::group(['prefix' => 'users', 'as' => 'user.', 'middleware' => 'auth'], fun
        Route::put('restore', [CRUD\User\UserController::class, 'restore'])->name('restore');
     });
 });
+
+Route::post('/mark-as-read', [C\ProfileController::class, 'markNotification'])->name('markNotification');
