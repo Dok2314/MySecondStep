@@ -15,7 +15,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::paginate(5);
+        $users = User::withTrashed()->orderBy('created_at', 'desc')->paginate(5);
 
         return view('CRUD.users.index', compact('users'));
     }
@@ -59,5 +59,21 @@ class UserController extends Controller
         $user->update();
 
         return redirect()->route('user.edit', $user)->with('success', 'Пользователь успешно изменён!');
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+
+        return redirect()->route('user.index')->with('success', 'Пользователь успешно удалён!');
+    }
+
+    public function restore($id)
+    {
+        User::withTrashed()
+            ->find($id)
+            ->restore();
+
+        return redirect()->back()->with('success', 'Пользователь успешно востановлен!');
     }
 }

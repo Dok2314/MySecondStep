@@ -2,12 +2,9 @@
 
 namespace App\Providers;
 
-use App\Models\Version;
-use App\Observers\VersionObserver;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+use App\Events\UserRegistered;
+use App\Listeners\SendTelegrammMessageWhenUserRegistered;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -17,9 +14,9 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
-        ],
+        UserRegistered::class => [
+            SendTelegrammMessageWhenUserRegistered::class
+        ]
     ];
 
     /**
@@ -29,7 +26,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Version::observe(VersionObserver::class);
+
     }
 
     /**

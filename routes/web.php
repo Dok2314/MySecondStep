@@ -19,7 +19,7 @@ use App\Http\Controllers\CRUD as CRUD;
 
 Route::get('/', [C\HomeController::class, 'home'])->name('homePage');
 
-//Route::get('/test', function () {
+//Route::get('/test', function (\App\Services\Helpers\Telegram $telegram) {
 //
 //});
 
@@ -65,11 +65,6 @@ Route::group(['middleware' => 'auth'], function () {
             ->name('comment.like');
     });
 
-    Route::group(['prefix' => 'user/{post}/likes'], function () {
-        Route::get('/', [CRUD\Post\PostController::class, 'userWhoAlsoLikePost'])
-            ->name('user.likes');
-    });
-
     Route::delete('/delete/{post}', [CRUD\Post\PostController::class, 'deleteFormHomePage'])
         ->name('posts.delete');
 
@@ -77,6 +72,11 @@ Route::group(['middleware' => 'auth'], function () {
         'posts'     => CRUD\Post\PostController::class,
         'comments'  => CRUD\Comment\CommentController::class
     ]);
+});
+
+Route::group(['prefix' => 'user/{post}/likes'], function () {
+    Route::get('/', [CRUD\Post\PostController::class, 'userWhoAlsoLikePost'])
+        ->name('user.likes');
 });
 
 Route::get('/search', [C\HomeController::class, 'search'])->name('search');
@@ -103,5 +103,9 @@ Route::group(['prefix' => 'users', 'as' => 'user.', 'middleware' => 'auth'], fun
        Route::get('edit', [CRUD\User\UserController::class, 'edit'])->name('edit');
 
        Route::put('edit', [CRUD\User\UserController::class, 'update']);
+
+       Route::delete('delete', [CRUD\User\UserController::class, 'destroy'])->name('delete');
+
+       Route::put('restore', [CRUD\User\UserController::class, 'restore'])->name('restore');
     });
 });

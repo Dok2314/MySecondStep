@@ -53,7 +53,9 @@
                  </form>
              </div>
              <div class="col-md-4">
+                 <i class="fa-solid fa-bell" style="font-size: 50px; float: right">
 
+                 </i>
              </div>
          </div>
     </div>
