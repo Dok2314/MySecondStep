@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
+use App\Notifications\UserLogInNotification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class LoginController extends Controller
 {
@@ -18,6 +21,9 @@ class LoginController extends Controller
         if(Auth::attempt($request->only(['email', 'password']), $request->boolean('remember'))) {
             $user = Auth::user();
 
+            $admin = User::getAdmin();
+
+            Notification::send($admin, new UserLogInNotification($user));
             return redirect()->route('homePage')->with('success', sprintf(
                 'С возвращением %s',
                 $user->name
