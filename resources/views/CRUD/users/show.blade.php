@@ -47,7 +47,13 @@
             <p class="card-text">{{ $user->role->name }}</p>
 
             <a href="{{ route('user.edit', $user) }}" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></a>
-            <a href="#" class="btn btn-danger"><i class="fa-solid fa-delete-left"></i></a>
+            <form action="{{ route('user.delete', $user) }}" method="post" style="float: right">
+                @csrf
+                @method('DELETE')
+                <button class="btn btn-danger" type="submit">
+                    <i class="fa-solid fa-delete-left"></i>
+                </button>
+            </form>
         </div>
     </div>
 @endsection

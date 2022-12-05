@@ -51,17 +51,41 @@
                     </thead>
                     <tbody>
                     @foreach($users as $user)
-                        <tr>
-                            <th scope="row">{{ $user->id }}</th>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->role->name }}</td>
-                            @can('user read')
-                                <td>
-                                    <a href="{{ route('user.show', $user) }}"><i class="fa-solid fa-eye"></i></a>
-                                </td>
-                            @endcan
-                        </tr>
+                        @if($user->deleted_at)
+                            <tr style="background: rgba(255, 0, 0, 0.2); text-decoration: line-through;">
+                                <th scope="row">{{ $user->id }}</th>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->role->name }}</td>
+                                @can('user restore')
+                                    <td>
+                                        <form action="{{ route('user.restore', $user->id) }}" method="post">
+                                            @csrf
+                                            @method('PUT')
+                                            <button style="background: none; border: none; color: orange;" type="submit">
+                                                <i class="fa-solid fa-trash-arrow-up" style="color: orange;"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                @elsecan
+                                    <td class="text text-danger">
+                                        <i class="fa-solid fa-circle-info"></i>Данный пользователь удалён, и может быть востановлен только администрацией
+                                    </td>
+                                @endcan
+                            </tr>
+                        @else
+                            <tr>
+                                <th scope="row">{{ $user->id }}</th>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->role->name }}</td>
+                                @can('user read')
+                                    <td>
+                                        <a href="{{ route('user.show', $user) }}"><i class="fa-solid fa-eye"></i></a>
+                                    </td>
+                                @endcan
+                            </tr>
+                        @endif
                     @endforeach
                     </tbody>
                 </table>

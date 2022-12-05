@@ -5,8 +5,6 @@ namespace App\Listeners;
 use App\Events\UserRegistered;
 use App\Models\User;
 use App\Services\Helpers\Telegram;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class SendTelegrammMessageWhenUserRegistered
 {
@@ -31,6 +29,7 @@ class SendTelegrammMessageWhenUserRegistered
     public function handle(UserRegistered $event)
     {
         $userCount = User::all()->count();
-        $this->telegram->sendButtons(config('bots.telegram_bot.chat_id'), (string)view('events.userRegistered',compact('userCount')));
+
+        $this->telegram->sendMessage(config('bots.telegram_bot.chat_id'), (string)view('events.userRegistered', compact('event','userCount')));
     }
 }
