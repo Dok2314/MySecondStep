@@ -65,37 +65,39 @@
                                  </button>
                              </div>
                              <div class="modal-body" id="modal-body">
-                                  @forelse($notifications as $notification)
-                                      <div class="alert alert-success" role="alert">
-                                          <a href="#" class="float-right mark-as-read" style="text-decoration: none;" data-id="{{ $notification->id }}">
-                                              Х
-                                          </a>
+                                 @if(isset($notifications))
+                                      @forelse($notifications as $notification)
+                                          <div class="alert alert-success" role="alert">
+                                              <a href="#" class="float-right mark-as-read" style="text-decoration: none;" data-id="{{ $notification->id }}">
+                                                  Х
+                                              </a>
 
-                                          @if($notification->type == 'App\Notifications\PostCreatedNotification')
-                                              [{{ $notification->created_at->toDateString() }}] Пользователь <b>{{ $notification->data['user_name'] }}</b> создал пост
-                                              <b>{{ $notification->data['title'] }}</b>
-                                          @else
-                                              Пользователь <b>{{ $notification->data['name'] }}</b>
-                                              совершил вход на сайт в
-                                              [{{ $notification->created_at->toDateString() }}]
+                                              @if($notification->type == 'App\Notifications\PostCreatedNotification')
+                                                  [{{ $notification->created_at }}] Пользователь <b>{{ $notification->data['user_name'] }}</b> создал пост
+                                                  <b>{{ $notification->data['title'] }}</b>
+                                              @else
+                                                  Пользователь <b>{{ $notification->data['name'] }}</b>
+                                                  совершил вход на сайт в
+                                                  [{{ $notification->created_at }}]
+                                              @endif
+                                          </div>
+
+                                          @if($loop->last)
+                                              <a href="#" id="mark-all" style="text-decoration: none;">
+                                                  Отметить все как прочитаное
+                                              </a>
                                           @endif
-                                      </div>
-
-                                      @if($loop->last)
-                                          <a href="#" id="mark-all" style="text-decoration: none;">
-                                              Отметить все как прочитаное
-                                          </a>
-                                      @endif
-                                  @empty
-                                      Уведомлений пока нет
-                                  @endforelse
+                                      @empty
+                                          Уведомлений пока нет
+                                      @endforelse
+                                 @endif
                              </div>
                          </div>
                      </div>
                  </div>
                      <button type="button" class="border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#exampleModal" style="float: right;">
                          <i class="fa-solid fa-bell" style="font-size: 50px; float: right">
-                             {{ $notifications->count() }}
+                            {{ $notifications->count() }}
                          </i>
                      </button>
              </div>
@@ -117,7 +119,6 @@
         $(function() {
             $('.mark-as-read').click(function() {
                 let request = sendMarkRequest($(this).data('id'));
-                console.log(request)
                 request.done(() => {
                     $(this).parents('div.alert').remove();
                 });

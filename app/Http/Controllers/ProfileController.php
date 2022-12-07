@@ -11,7 +11,7 @@ class ProfileController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $notifications = auth()->user()->unreadNotifications;
+        $notifications = $user->unreadNotifications;
 
         return view('profile.index', compact('user', 'notifications'));
     }
@@ -19,6 +19,7 @@ class ProfileController extends Controller
     public function update(Request $request)
     {
         $user = auth()->user();
+        $notifications = $user->unreadNotifications;
 
         if($request->hasFile('image')) {
             $avatar = $request->file('image');
@@ -32,7 +33,7 @@ class ProfileController extends Controller
             $user->save();
         }
 
-        return view('profile.index', compact('user'));
+        return view('profile.index', compact('user', 'notifications'));
     }
 
     public function markNotification(Request $request)
