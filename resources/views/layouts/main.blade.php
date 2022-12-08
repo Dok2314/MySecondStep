@@ -36,6 +36,9 @@
 @include('includes.footer')
 <script src="https://kit.fontawesome.com/d202b66049.js" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 @stack('scripts')
 </body>
 </html>

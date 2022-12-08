@@ -39,7 +39,7 @@ class LoginController extends Controller
             return back()->with('error', 'Вы превысили максимально допустимое количество попыток. Осталось ждать: '.$seconds.' секунд.');
         }
 
-         RateLimiter::hit($rateLimitingKey);
+         RateLimiter::hit($rateLimitingKey, 120);
 
         return back()->with('error', sprintf(
             'Неверные данные. Осталось попыток: %d',
