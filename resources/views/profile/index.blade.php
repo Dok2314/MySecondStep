@@ -105,6 +105,16 @@
     </div>
 @endsection
 
+@push('styles')
+    <style>
+        #modal-body
+        {
+            overflow:scroll;
+            max-height: 500px;
+        }
+    </style>
+@endpush
+
 @push('scripts')
     <script>
         function sendMarkRequest(id = null) {

@@ -48,7 +48,7 @@ class PostController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  PostRequest $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(PostRequest $request)
     {
