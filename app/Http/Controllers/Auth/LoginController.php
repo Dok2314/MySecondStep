@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Notifications\UserLogInNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\RateLimiter;
 
 class LoginController extends Controller
 {
@@ -18,6 +19,8 @@ class LoginController extends Controller
 
     public function login(LoginRequest $request)
     {
+        $rateLimitingKey = $request->input('email') . '|' . $request->ip();
+
         if(Auth::attempt($request->only(['email', 'password']), $request->boolean('remember'))) {
             $user = Auth::user();
 
@@ -30,7 +33,18 @@ class LoginController extends Controller
             ));
         }
 
-        return back()->with('error', 'Неверные данные!');
+        if (RateLimiter::tooManyAttempts($rateLimitingKey,  $perMinute = 5)) {
+            $seconds = RateLimiter::availableIn($rateLimitingKey);
+
+            return back()->with('error', 'Вы превысили максимально допустимое количество попыток. Осталось ждать: '.$seconds.' секунд.');
+        }
+
+         RateLimiter::hit($rateLimitingKey);
+
+        return back()->with('error', sprintf(
+            'Неверные данные. Осталось попыток: %d',
+            RateLimiter::retriesLeft($rateLimitingKey, $perMinute)
+        ));
     }
 
     public function reloadCaptcha()
