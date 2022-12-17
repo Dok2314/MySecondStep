@@ -13,11 +13,15 @@
                     @auth
                         <div class="container">
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-8">
                                     <h4 style="margin-right: 17px">{{ Auth::user()->name }}</h4>
                                     <a href="{{ route('auth.logout') }}">
                                         <button type="button" class="btn btn-outline-light me-2">Выйти</button>
                                     </a>
+                                </div>
+                                <div class="col-md-4">
+                                    <h4 style="margin-right: 17px">{{ __('main.current_lang') }}</h4>
+                                    <li style="list-style-type: none;"><a href="{{ route('locale', __('main.set_lang')) }}">{{ __('main.set_lang') }}</a></li>
                                 </div>
                             </div>
                         </div>

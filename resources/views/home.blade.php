@@ -13,7 +13,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Данный пост также нравится:</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">{{ __('main.also_like_post') }}</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -22,8 +22,8 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th scope="col">Пользователь</th>
-                            <th scope="col">E-mail</th>
+                            <th scope="col">{{ __('main.user') }}</th>
+                            <th scope="col">{{ __('main.email') }}</th>
                         </tr>
                         </thead>
                         <tbody class="usersWhoAlsoLikePost">
@@ -42,20 +42,20 @@
     <div class="container mb-5 mt-3">
         <div class="row">
             <div class="col-md-8">
-                <h4>Сортировать по автору(ам)</h4>
+                <h4>{{ __('main.sort_by_authors') }}</h4>
                 <form action="{{ route('homePage') }}">
-                    <select name="users[]"  id="select-state" placeholder="Выберите автора(ов)" multiple>
+                    <select name="users[]"  id="select-state" placeholder="{{ __('main.select_authors') }}" multiple>
                         @foreach($users as $user)
                             <option value="">Select a state...</option>
                             <option value="{{ $user->id }}">{{ $user->name }}</option>
                         @endforeach
                     </select>
-                    <button class="btn btn-success mt-2 btn-sm">Фильтровать</button>
+                    <button class="btn btn-success mt-2 btn-sm">{{ __('main.filter') }}</button>
                 </form>
             </div>
             <div class="col-md-4">
                 <div class="search">
-                    <input style="margin-top: 35px;" type="search" name="search" id="search" placeholder="Найдите нужный пост..." class="form-control">
+                    <input style="margin-top: 35px;" type="search" name="search" id="search" placeholder="{{ __('main.find_right_post') }}" class="form-control">
                 </div>
             </div>
         </div>
@@ -63,13 +63,13 @@
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">Номер</th>
-            <th scope="col">Название</th>
-            <th scope="col">Пост</th>
-            <th scope="col">Автор</th>
-            <th scope="col">Создан</th>
-            <th scope="col">Нравится</th>
-            <th scope="col">Коментарии</th>
+            <th scope="col">{{ __('main.number') }}</th>
+            <th scope="col">{{ __('main.title') }}</th>
+            <th scope="col">{{ __('main.post') }}</th>
+            <th scope="col">{{ __('main.author') }}</th>
+            <th scope="col">{{ __('main.created') }}</th>
+            <th scope="col">{{ __('main.likes') }}</th>
+            <th scope="col">{{ __('main.comments') }}</th>
         </tr>
         </thead>
         <tbody id="Content">

@@ -6,6 +6,7 @@ use App\Filters\PostFilter;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class HomeController extends Controller
 {
@@ -65,5 +66,13 @@ class HomeController extends Controller
         }
 
         return response($output);
+    }
+
+    public function changeLocale($locale)
+    {
+        session(['locale' => $locale]);
+        App::setLocale($locale);
+
+        return redirect()->back();
     }
 }
