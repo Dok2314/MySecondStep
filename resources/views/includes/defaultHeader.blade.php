@@ -2,7 +2,7 @@
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="{{ route('homePage') }}" class="nav-link px-2 text-secondary">Главная</a></li>
+                <li><a href="{{ route('homePage') }}" class="nav-link px-2 text-secondary">{{ __('main.home') }}</a></li>
             </ul>
 
             <div class="text-end">
@@ -12,7 +12,7 @@
                             <div class="col-md-8">
                                 <h4 style="margin-right: 17px">{{ Auth::user()->name }}</h4>
                                 <a href="{{ route('auth.logout') }}">
-                                    <button type="button" class="btn btn-outline-light me-2">Выйти</button>
+                                    <button type="button" class="btn btn-outline-light me-2">{{ __('main.logout') }}</button>
                                 </a>
                             </div>
                             <div class="col-md-4">
