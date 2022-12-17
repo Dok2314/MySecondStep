@@ -2,7 +2,7 @@
     <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
             <a href="{{ route('user.index') }}" class="nav-link active" aria-current="page">
-                Пользователи
+                {{ __('main.users') }}
             </a>
         </li>
     </ul>

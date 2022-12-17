@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Главная')
+@section('title',  __('main.home'))
 
 @section('header')
     @include('includes.defaultHeader')
