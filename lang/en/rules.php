@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'Администратор' => 'admin',
-    'Разработчик' => 'developer',
-    'Пользователь' => 'user',
+    'admin' => 'admin',
+    'developer' => 'developer',
+    'user' => 'user',
 ];
